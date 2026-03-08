@@ -38,12 +38,26 @@ const Signup = ({ onSignupSuccess }) => {
             alert("✅ Signup Successful! Please wait for Admin approval.");
             onSignupSuccess(formData.username);
         } catch (error) {
-            // --- THIS IS THE FIX: SHOW THE EXACT ERROR ---
             console.error("FULL ERROR:", error.response?.data);
 
-            // Convert the error object to a readable string
-            const errorMsg = JSON.stringify(error.response?.data, null, 2);
-            alert(`❌ Signup Failed:\n${errorMsg}`);
+            // --- FIX: Extract clean user-friendly error messages ---
+            if (error.response && error.response.data) {
+                const errData = error.response.data;
+                
+                // If Django tells us the username is taken, show just that text
+                if (errData.username) {
+                    alert(`❌ Error: ${errData.username[0]}`);
+                } 
+                else if (errData.phone_number) {
+                    alert(`❌ Error: Phone number - ${errData.phone_number[0]}`);
+                }
+                // Fallback for other errors
+                else {
+                    alert(`❌ Signup Failed:\n${JSON.stringify(errData, null, 2)}`);
+                }
+            } else {
+                alert("❌ Signup Failed: Cannot reach server.");
+            }
         }
     };
 
