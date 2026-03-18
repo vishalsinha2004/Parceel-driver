@@ -9,18 +9,14 @@ const Login = ({ onLoginSuccess, switchToSignup }) => {
     e.preventDefault();
     setLoading(true);
     try {
-      // 1. Request REAL JWT tokens from the backend
       const response = await api.post('auth/login/', { 
         username: formData.username, 
         password: formData.password 
       });
 
-      // 2. Extract the access token (SimpleJWT returns it as 'access')
       const token = response.data.access; 
 
       if (token) {
-        console.log("✅ Token received and saved.");
-        // 3. Pass username and token to App.jsx to save in localStorage
         onLoginSuccess(formData.username, token);
       } else {
         alert("❌ Server did not return a valid token.");
@@ -35,43 +31,45 @@ const Login = ({ onLoginSuccess, switchToSignup }) => {
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '300px', margin: '50px auto', border: '1px solid #ccc', borderRadius: '10px', background: 'white' }}>
-      <h2 style={{ textAlign: 'center' }}>🔑 Driver Login</h2>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-        <input 
-          placeholder="Username" 
-          value={formData.username}
-          onChange={(e) => setFormData({...formData, username: e.target.value})}
-          required 
-          style={{ padding: '12px', borderRadius: '5px', border: '1px solid #ddd' }}
-        />
-        <input 
-          type="password"
-          placeholder="Password" 
-          value={formData.password}
-          onChange={(e) => setFormData({...formData, password: e.target.value})}
-          required 
-          style={{ padding: '12px', borderRadius: '5px', border: '1px solid #ddd' }}
-        />
-        <button 
-          type="submit" 
-          disabled={loading}
-          style={{ 
-            padding: '12px', 
-            background: loading ? '#666' : 'black', 
-            color: 'white', 
-            border: 'none', 
-            borderRadius: '5px', 
-            cursor: loading ? 'not-allowed' : 'pointer',
-            fontWeight: 'bold'
-          }}
-        >
-          {loading ? 'Logging in...' : 'Login'}
-        </button>
-      </form>
-      <p style={{ textAlign: 'center', marginTop: '15px', fontSize: '14px' }}>
-        New Driver? <span onClick={switchToSignup} style={{ color: '#3498db', cursor: 'pointer', fontWeight: 'bold' }}>Sign up here</span>
-      </p>
+    <div className="min-h-[100dvh] w-full bg-zinc-50 flex items-center justify-center p-4 md:p-6">
+      <div className="bg-white p-6 md:p-8 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.06)] w-full max-w-md border border-zinc-100">
+                
+        <div className="text-center mb-8">
+          <h2 className="text-4xl font-black text-zinc-900 italic tracking-tighter drop-shadow-sm">P- Pilot</h2>
+          <p className="text-sm font-bold text-zinc-400 mt-1 uppercase tracking-widest">Driver Portal</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4 animate-fade-in">
+          <input 
+            placeholder="Username" 
+            value={formData.username}
+            onChange={(e) => setFormData({...formData, username: e.target.value})}
+            required 
+            className="w-full p-4 rounded-2xl bg-zinc-50 border border-zinc-200 outline-none focus:border-zinc-900 focus:ring-4 focus:ring-zinc-900/10 transition-all font-medium text-zinc-900"
+          />
+          <input 
+            type="password"
+            placeholder="Password" 
+            value={formData.password}
+            onChange={(e) => setFormData({...formData, password: e.target.value})}
+            required 
+            className="w-full p-4 rounded-2xl bg-zinc-50 border border-zinc-200 outline-none focus:border-zinc-900 focus:ring-4 focus:ring-zinc-900/10 transition-all font-medium text-zinc-900"
+          />
+          <button 
+            type="submit" 
+            disabled={loading}
+            className={`w-full p-4 rounded-2xl text-white font-black uppercase tracking-wide transition-all shadow-[0_8px_20px_rgba(0,0,0,0.15)] mt-2 ${
+              loading ? 'bg-zinc-400 cursor-not-allowed' : 'bg-zinc-900 hover:bg-black active:scale-95'
+            }`}
+          >
+            {loading ? 'Authenticating...' : 'Secure Login'}
+          </button>
+        </form>
+
+        <p className="text-center text-sm font-bold text-zinc-400 mt-8">
+          New Pilot? <span onClick={switchToSignup} className="text-red-600 hover:text-red-700 cursor-pointer transition-colors">Apply here</span>
+        </p>
+      </div>
     </div>
   );
 };

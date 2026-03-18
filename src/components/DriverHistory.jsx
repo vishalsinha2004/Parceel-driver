@@ -29,37 +29,45 @@ export default function DriverHistory() {
 
   if (loading) {
     return (
-      <div style={{ textAlign: 'center', marginTop: '50px' }}>
-        <p className="text-slate-500 font-bold">Loading your past trips...</p>
+      <div className="flex flex-col items-center justify-center h-full pb-32">
+        <div className="w-10 h-10 border-4 border-zinc-200 border-t-zinc-900 rounded-full animate-spin mb-4"></div>
+        <p className="text-zinc-500 font-bold tracking-wide">Loading your trip history...</p>
       </div>
     );
   }
 
   return (
-    <div style={{ padding: '20px', background: '#f9f9f9', height: '100%', overflowY: 'auto', paddingBottom: '100px' }}>
-      <h2 style={{ fontSize: '24px', marginBottom: '20px', color: '#2c3e50', fontWeight: 'black' }}>📜 Order History</h2>
+    <div className="absolute inset-0 p-4 md:p-6 overflow-y-auto pb-32 bg-zinc-50 font-sans">
+      <h2 className="text-xl md:text-2xl mb-4 md:mb-6 text-zinc-900 font-black tracking-tight">📜 Takeoff History</h2>
       
       {history.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '40px', background: 'white', borderRadius: '15px' }}>
-          <p style={{ fontSize: '18px', color: '#7f8c8d' }}>You haven't completed any rides yet.</p>
+        <div className="text-center p-10 bg-white rounded-3xl shadow-sm border border-zinc-100">
+          <div className="text-5xl mb-3 opacity-30">🛣️</div>
+          <p className="text-lg font-bold text-zinc-400">No completed trips yet.</p>
         </div>
       ) : (
-        <div style={{ display: 'grid', gap: '15px' }}>
+        <div className="space-y-4">
           {history.map((ride) => (
-            <div key={ride.id} style={{ 
-              background: 'white', padding: '20px', borderRadius: '15px', 
-              boxShadow: '0 4px 12px rgba(0,0,0,0.05)', borderLeft: '5px solid #27ae60'
-            }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                <span style={{ fontWeight: 'bold', color: '#7f8c8d' }}>Order #{ride.id}</span>
-                <span style={{ color: '#27ae60', fontSize: '18px', fontWeight: 'black' }}>
+            <div key={ride.id} className="bg-white p-5 rounded-2xl shadow-[0_4px_15px_rgba(0,0,0,0.03)] border border-zinc-100 border-l-4 border-l-green-500 transition-transform hover:-translate-y-1">
+              
+              <div className="flex justify-between items-center mb-3 pb-3 border-b border-zinc-100">
+                <span className="font-black text-zinc-500 text-sm uppercase tracking-wider">Order #{ride.id}</span>
+                <span className="text-green-500 text-2xl font-black tracking-tighter">
                   ₹{ride.price}
                 </span>
               </div>
-              <div style={{ fontSize: '13px', color: '#34495e', marginTop: '10px' }}>
-                <p style={{ margin: '5px 0' }}>📍 {ride.pickup_address}</p>
-                <p style={{ margin: '5px 0' }}>🏁 {ride.dropoff_address}</p>
+              
+              <div className="text-sm font-medium text-zinc-600 space-y-2">
+                <div className="flex gap-2 items-start">
+                  <span className="mt-0.5 text-zinc-400">📍</span>
+                  <p className="m-0 leading-snug">{ride.pickup_address}</p>
+                </div>
+                <div className="flex gap-2 items-start">
+                  <span className="mt-0.5 text-zinc-400">🏁</span>
+                  <p className="m-0 leading-snug">{ride.dropoff_address}</p>
+                </div>
               </div>
+
             </div>
           ))}
         </div>
