@@ -26,10 +26,7 @@ function App() {
     const savedOnline = localStorage.getItem('indora_driver_online') === 'true';
     
     // Live Render Socket Connection
-   const newSocket = io('https://parceel-backend.onrender.com', {
-        transports: ['websocket'],
-        upgrade: false
-    });
+    const newSocket = io('https://parceel-backend.onrender.com');
     setSocket(newSocket);
     
     if (token) {
