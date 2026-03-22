@@ -1,8 +1,10 @@
+// src/api/axios.js
 import axios from 'axios';
 
 const api = axios.create({
-    // Use the environment variable, fallback to localhost if not set
-    baseURL: import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api/', 
+    // REPLACE THIS with your actual Render URL if it is different!
+    // Make sure it ends with /api/
+    baseURL: 'https://parceel-backend.onrender.com/api/', 
 });
 
 api.interceptors.request.use((config) => {
