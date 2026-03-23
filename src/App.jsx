@@ -25,8 +25,7 @@ function App() {
     const savedUsername = localStorage.getItem('driver_username') || '';
     const savedOnline = localStorage.getItem('indora_driver_online') === 'true';
     
-    // Live Render Socket Connection
-    const newSocket = io('https://parceel-backend.onrender.com');
+    const newSocket = io('http://localhost:8000');
     setSocket(newSocket);
     
     if (token) {
@@ -135,8 +134,7 @@ function App() {
   const DropoffIcon = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-red-600 mt-0.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>;
 
   return (
-    /* ULTIMATE SLIM PHONE FRAME FOR DESKTOP */
-    <div className="w-full h-[100dvh] sm:h-[90vh] sm:max-h-[850px] sm:max-w-[390px] sm:rounded-[40px] sm:border-[8px] sm:border-zinc-900 bg-zinc-50 relative flex flex-col overflow-hidden shadow-2xl font-sans mx-auto">
+    <div className="h-[100dvh] w-full md:max-w-md mx-auto bg-zinc-50 flex flex-col relative md:border-x md:border-zinc-200 md:shadow-[0_0_50px_rgba(0,0,0,0.1)] overflow-hidden font-sans">
       
       {/* 1. GLASSMORPHISM HEADER */}
       <header className="absolute top-0 left-0 right-0 h-16 bg-white/80 backdrop-blur-md border-b border-white/50 z-[2000] shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex justify-between items-center px-4 md:px-5">
@@ -154,18 +152,7 @@ function App() {
                   )}
               </button>
 
-              {/* RESTORED LOGOUT BUTTON */}
-              <button 
-                  onClick={handleLogout}
-                  title="Logout"
-                  className="w-8 h-8 md:w-9 md:h-9 flex items-center justify-center rounded-full bg-zinc-100/80 text-zinc-600 hover:bg-zinc-200/80 border border-zinc-200 backdrop-blur-sm transition-colors"
-              >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="ml-0.5">
-                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                      <polyline points="16 17 21 12 16 7"/>
-                      <line x1="21" y1="12" x2="9" y2="12"/>
-                  </svg>
-              </button>
+              
           </div>
       </header>
 
@@ -174,7 +161,7 @@ function App() {
         {currentView === 'reviews' ? <DriverReviews /> :
          currentView === 'history' ? <DriverHistory /> :
          currentView === 'wallet'  ? <DriverWallet /> : 
-         currentView === 'profile' ? <DriverProfile username={userState.username} onLogout={handleLogout} /> : 
+         currentView === 'profile' ? <DriverProfile username={userState.username} onLogout={handleLogout} /> : // <-- ADD THIS LINE
          activeRide ? (
           
           /* --- NAVIGATION MODE --- */
@@ -219,7 +206,7 @@ function App() {
             {!isOnline ? (
               <div className="text-center mt-[15vh] md:mt-[20vh] text-zinc-400 px-4">
                 <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="mx-auto mb-4 opacity-50 transition-transform hover:scale-110">
-                  <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                  <path d="M2 12h4l3-9 5 18 3-9h5"/>
                 </svg>
                 <h3 className="font-black text-xl md:text-2xl text-zinc-500 mb-2">You are Offline</h3>
                 <p className="font-medium text-sm md:text-base mb-8">Go online to start receiving ride requests.</p>
@@ -237,7 +224,7 @@ function App() {
                 <h2 className="text-lg md:text-xl mb-4 font-black text-zinc-800 tracking-wide">Available Requests</h2>
                 {orders.length === 0 ? (
                   <div className="text-center mt-[20vh] text-zinc-400">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mx-auto mb-4 text-red-500 animate-spin">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mx-auto mb-4 text-blue-500 animate-spin">
                       <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
                     </svg>
                     <p className="font-bold text-sm md:text-base text-zinc-500">Scanning your area for riders...</p>
@@ -278,40 +265,40 @@ function App() {
         )}
       </div>
 
-      {/* 3. GLASS BOTTOM NAVIGATION BAR WITH 5 ICONS */}
+      {/* 3. GLASS BOTTOM NAVIGATION BAR */}
       {(!activeRide || currentView !== 'home') && (
         <div className="absolute bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl flex justify-around items-center pb-safe pt-2 shadow-[0_-10px_30px_rgba(0,0,0,0.05)] border-t border-white/60 z-[3000]">
           
           <button onClick={() => setCurrentView('home')} className={`flex flex-col items-center gap-1 p-2 md:p-3 flex-1 transition-colors ${currentView === 'home' ? 'text-red-600' : 'text-zinc-400 hover:text-zinc-600'}`}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill={currentView === 'home' ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="transition-transform active:scale-90">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill={currentView === 'home' ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform active:scale-90">
               <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
             </svg>
             <span className="text-[9px] font-black uppercase tracking-wider mt-0.5">Home</span>
           </button>
           
           <button onClick={() => setCurrentView('wallet')} className={`flex flex-col items-center gap-1 p-2 md:p-3 flex-1 transition-colors ${currentView === 'wallet' ? 'text-red-600' : 'text-zinc-400 hover:text-zinc-600'}`}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill={currentView === 'wallet' ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="transition-transform active:scale-90">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill={currentView === 'wallet' ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform active:scale-90">
               <rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/>
             </svg>
             <span className="text-[9px] font-black uppercase tracking-wider mt-0.5">Wallet</span>
           </button>
           
           <button onClick={() => setCurrentView('history')} className={`flex flex-col items-center gap-1 p-2 md:p-3 flex-1 transition-colors ${currentView === 'history' ? 'text-red-600' : 'text-zinc-400 hover:text-zinc-600'}`}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill={currentView === 'history' ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="transition-transform active:scale-90">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill={currentView === 'history' ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform active:scale-90">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><polyline points="10 9 9 9 8 9"/>
             </svg>
             <span className="text-[9px] font-black uppercase tracking-wider mt-0.5">History</span>
           </button>
           
           <button onClick={() => setCurrentView('reviews')} className={`flex flex-col items-center gap-1 p-2 md:p-3 flex-1 transition-colors ${currentView === 'reviews' ? 'text-red-600' : 'text-zinc-400 hover:text-zinc-600'}`}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill={currentView === 'reviews' ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="transition-transform active:scale-90">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill={currentView === 'reviews' ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform active:scale-90">
               <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
             </svg>
             <span className="text-[9px] font-black uppercase tracking-wider mt-0.5">Reviews</span>
           </button>
 
           <button onClick={() => setCurrentView('profile')} className={`flex flex-col items-center gap-1 p-2 md:p-3 flex-1 transition-colors ${currentView === 'profile' ? 'text-red-600' : 'text-zinc-400 hover:text-zinc-600'}`}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill={currentView === 'profile' ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="transition-transform active:scale-90">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill={currentView === 'profile' ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform active:scale-90">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
             </svg>
             <span className="text-[9px] font-black uppercase tracking-wider mt-0.5">Profile</span>
